@@ -1,0 +1,92 @@
+{
+  "zweck": "Richtet Arbeit, Prioritaeten und Ideen auf Roman aus statt auf einen generischen Nutzer. null = noch nicht festgelegt, nicht raten.",
+  "stand": "2026-10-26",
+  "quelle": "Gespraech + /root/github/LABv2 (README.md, LOCK ORDER.md, Entwicklungsvertrag.md, data/mitglieder.csv), nur gelesen",
+  "person": {
+    "name": "Roman Hild",
+    "kennung": "LYKOS68",
+    "rolle": "Product Owner und Architekt; Code entsteht ausschliesslich ueber KI-CLIs (vibe coded), nicht von Hand",
+    "sprache": "Deutsch, direkt, kurz; Erklaerungen auf Wunsch auch fuer Nicht-Techniker"
+  },
+  "projekte": {
+    "rap-lab": {
+      "pfad": "/root/github/LABv2",
+      "was": "Vernetzungs- und Angebotsplattform fuer Musikschaffende: Rapper, Producer, Beatmaker, Mixer, Videografen, Designer",
+      "kern": "Marktplatz/Kleinanzeigen fuer Angebote und Gesuche: Beats, Mixing, Mastering, Ghostwriting, Features, Musikvideos, Cover, gemeinsame Projekte",
+      "leitfrage": "Was kann ich selbst, und wen brauche ich fuer den Rest?",
+      "status": "Early Dev; Website auf visuelle Gestaltung reduziert (Home, Connect-Prototyp), kein Backend",
+      "lizenz": "Polyform Noncommercial 1.0.0",
+      "eigene_regeln": [
+        "LOCK ORDER.md (6 Regeln)",
+        "append-only Daten (chatroom.jsonl mit Schema, prompt-vorlage.yaml mit festen IDs und Versionen)"
+      ]
+    },
+    "ztis": {
+      "pfad": "/root/github/ZTI2",
+      "was": "deterministischer Regelkern in Go, langfristig eigene Programmiersprache (kanon.json)"
+    }
+  },
+  "ziele": {
+    "langfristig": "eigene Programmiersprache auf Basis von ZTIS",
+    "rap_lab": "erst ein voll funktionsfaehiges Produkt, Fokus Community + Marktplatz, dann Nutzerfeedback, danach Monetarisierung und rechtliche Schritte",
+    "reichweite": "organisch, ohne Ads; spaeter evtl. Skripte fuer Posts in Communities",
+    "naechstes": null,
+    "fuer_wen": "Musikschaffende ohne eigenes Tonstudio"
+  },
+  "budget": {
+    "geld": "minimal; vorerst keine Monetarisierung, keine Gewerbeanmeldung",
+    "werkzeuge": [
+      {
+        "name": "Claude CLI",
+        "modell": "Claude Opus 5.5",
+        "kosten": "20 EUR/Monat",
+        "regel": "stark, aber Usage begrenzt: nur fuer schwere Aufgaben, nicht fuer alles"
+      },
+      {
+        "name": "OpenCode",
+        "modell": "big-pickle + Free-Modelle",
+        "kosten": "frei, geschaetzt 150-200+ Laeufe",
+        "regel": "fuer einfache, standardisierte Aufgaben"
+      },
+      {
+        "name": "Antigravity CLI",
+        "kosten": "frei, 5-10 Eingaben je Konto, 4 Konten",
+        "regel": "Reserve"
+      },
+      {
+        "name": "Manus",
+        "kosten": null,
+        "regel": "laut Chatroom Architekturfuehrung und Planung"
+      }
+    ],
+    "zeit_pro_woche": {
+      "min_stunden": 48,
+      "max_stunden": 72,
+      "quelle": "Roman, 2026-10-26"
+    },
+    "deadline": null,
+    "zeiteinheit": {
+      "wert": "Sitzung",
+      "roman_mit_cli_minuten": 45,
+      "claude_max_minuten": 30,
+      "regel": "Aufgaben in Sitzungen schaetzen; Claude-Aufgaben so schneiden, dass jede in hoechstens 30 Minuten fertig ist",
+      "quelle": "Roman, 2026-10-26"
+    }
+  },
+  "umgebung": {
+    "geraet": "Handy, Ubuntu in proot (arm64, 8 Kerne, 39-Bit-Adressraum)",
+    "go": "1.24.4 (ZTI2); LABv2 verlangt go 1.27 und templ",
+    "grenzen": [
+      "kein go run -race (ThreadSanitizer braucht 48 Bit)",
+      "ZTI2: nur Standard-Library, eine Main.go plus Datendateien"
+    ]
+  },
+  "arbeitsweise": [
+    "erst planen, dann bauen",
+    "nicht zu meta: konkreter Anwendungsfall vor Generator oder Framework",
+    "Begriffe nur aus kanon.json, unbekannte nicht raten",
+    "Claude-Usage sparen: Ergebnisse so liefern, dass guenstige Agenten Routinearbeit uebernehmen koennen",
+    "Crawl, Walk, Run: Konzept sammeln und verstehen, einzeln klein nachbauen, erst dann mit den Grossen vergleichen; erst zum Laufen bringen (Checks gruen), dann optimieren (Checks bleiben gruen)",
+    "Erst bei den Grossen nachsehen: bewaehrte, veroeffentlichte Algorithmen uebernehmen statt selbst erfinden; Algorithmus nachbauen, nicht fremden Code kopieren (Lizenz), und gegen Referenzdaten pruefen"
+  ]
+}

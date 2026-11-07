@@ -1,0 +1,13 @@
+{
+  "saeule": "TRANSFORMATION",
+  "invariante": "AlphaGenerator: rohe Eingabe -> Payload, nie None, deterministisch",
+  "geprueft_am": "2026-08-29T06:15:43",
+  "checks": [
+    {"name": "None -> 'PING' (Heartbeat)", "erwartet": "'PING'", "gemessen": "'PING'", "pass": true},
+    {"name": "'X' -> 'X' (Durchreichung)", "erwartet": "'X'", "gemessen": "'X'", "pass": true},
+    {"name": "0 -> 0 (nicht None -> durchgereicht)", "erwartet": "0", "gemessen": "0", "pass": true},
+    {"name": "nie None", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "deterministisch", "erwartet": "'q'", "gemessen": "'q'", "pass": true}
+  ],
+  "ergebnis": "BESTANDEN"
+}

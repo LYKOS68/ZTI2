@@ -1,0 +1,31 @@
+{
+  "beweisstueck": "kern_2 = kern_1 + holen(bedarf)",
+  "einzige_neue_mechanik": "holen(datei_pfad, bedarf) -> list, len <= K_MAX_ZETTEL",
+  "invariante_II": "|y| <= K_MAX_ZETTEL = 3, unabhaengig von |Bibliothek|; vor UND nach holen() geprueft",
+  "erhalten_unveraendert": ["kern_1 (I, III, Idempotenz)", "Bibliothek monoton", "Lemma x-y=const nur math.", "Engine-Op (x+z, y)"],
+  "geprueft_am": "2026-08-29T06:31:42",
+  "messung": {"kern_2_laufzeit_ms": 79.223, "test_bibliothek_max_fakten": 5000, "kontext_max": 3},
+  "checks": [
+    {"name": "II - 200 matchende Fakten -> |y| <= K", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "II - |y| == K bei Ueberangebot", "erwartet": "3", "gemessen": "3", "pass": true},
+    {"name": "II - Bibliothek(2) -> |y| <= K", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "II - Bibliothek(5000) -> |y| <= K  (gleiche Schranke)", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "II - |y_vor| <= K", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "II - |y_nach| <= K", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "Retrieval - zweiter holen()-Aufruf frisch, nicht angehaengt", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "Retrieval - jeder Zettel ist eine echte Bibliothekszeile", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "Relevanz - Fakt mit 2 Bedarfswoertern zuerst", "erwartet": "'hund und katze zusammen'", "gemessen": "'hund und katze zusammen'", "pass": true},
+    {"name": "leerer Bedarf -> []", "erwartet": "[]", "gemessen": "[]", "pass": true},
+    {"name": "kein Treffer -> []  (|y|=0 <= K)", "erwartet": "[]", "gemessen": "[]", "pass": true},
+    {"name": "B1 - fehlende Datei -> ValueError", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "Determinismus - gleiche Bibliothek+Bedarf -> gleicher Kontext", "erwartet": "['apfel 3', 'apfel 13', 'apfel 0']", "gemessen": "['apfel 3', 'apfel 13', 'apfel 0']", "pass": true},
+    {"name": "I - Bibliothek waechst genau +1", "erwartet": "2", "gemessen": "2", "pass": true},
+    {"name": "I - alter Fakt 'test' erhalten", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "III - kern_1 in kern_2 -> True", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "III - hash(datei) == hash('test\\nneuer fakt\\n')", "erwartet": "'75051858f5cf24b800aae461126b9e4d2f10418f7bbf2078066c7d24d2d00fa9'", "gemessen": "'75051858f5cf24b800aae461126b9e4d2f10418f7bbf2078066c7d24d2d00fa9'", "pass": true},
+    {"name": "Idempotenz - zweiter kern_2 mit selbem Fakt -> angehaengt False", "erwartet": "False", "gemessen": "False", "pass": true},
+    {"name": "Idempotenz - Fakt steht genau 1x", "erwartet": "1", "gemessen": "1", "pass": true},
+    {"name": "II in kern_2 - |kontext| <= K", "erwartet": "True", "gemessen": "True", "pass": true}
+  ],
+  "ergebnis": "BESTANDEN"
+}

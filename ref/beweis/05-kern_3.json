@@ -1,0 +1,79 @@
+{
+  "beweisstueck": "kern_3 = kern_2 + bauen(relevanz)",
+  "einzige_neue_mechanik": "bauen(kontext, relevanz) -> (block, herkunft) ; kein Bibliothekszugriff",
+  "abbildung": "ZUSTAND -> TRANSFORMATION -> INFORMATION -> INTEGRATION -> INTERFERENZ",
+  "erhalten_unveraendert": ["kern_1 (I,III,Idempotenz)", "kern_2 / holen (II)", "Bibliothek monoton", "Engine-Op (x+z, y)"],
+  "geprueft_am": "2026-08-29T06:31:43",
+  "saeulen": {
+    "1. ZUSTAND": {
+      "checks": [
+        {"name": "x = dauerhafte Bibliothek besteht fort", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "kein bestehender Fakt verloren/veraendert", "erwartet": "['apfel ist rot', 'birne ist gruen', 'apfel und birne im korb', 'kirsche ist klein', 'auto faehrt schnell']", "gemessen": "['apfel ist rot', 'birne ist gruen', 'apfel und birne im korb', 'kirsche ist klein', 'auto faehrt schnell']", "pass": true},
+        {"name": "y besteht NUR aus echten Bibliothekszeilen", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "y ist temporaer (nicht in der Datei gespeichert)", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "genau 1 neuer Fakt hinzugekommen", "erwartet": "6", "gemessen": "6", "pass": true}
+      ],
+      "bestanden": true
+    },
+    "2. TRANSFORMATION": {
+      "checks": [
+        {"name": "bauen-Signatur enthaelt keinen Datei-/Bibliothekspfad", "erwartet": "['kontext', 'relevanz']", "gemessen": "['kontext', 'relevanz']", "pass": true},
+        {"name": "block enthaelt nur Kontext-Zeilen (nichts aus der Bibliothek)", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "'auto faehrt schnell' (in Bibliothek, nicht in kontext) fehlt im block", "erwartet": "False", "gemessen": "False", "pass": true},
+        {"name": "bauen deterministisch (block)", "erwartet": "'apfel ist rot'", "gemessen": "'apfel ist rot'", "pass": true},
+        {"name": "bauen deterministisch (herkunft)", "erwartet": "['apfel ist rot']", "gemessen": "['apfel ist rot']", "pass": true},
+        {"name": "herkunft ist Teilmenge von kontext", "erwartet": "True", "gemessen": "True", "pass": true}
+      ],
+      "bestanden": true
+    },
+    "3. INFORMATION": {
+      "checks": [
+        {"name": "festgehalten: Bibliothek -> y  (kontext = holen-Ausgabe)", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "festgehalten: was bauen verarbeitet  (herkunft)", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "herkunft == {z in kontext : relevanz-Filter trifft}", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "jeder herkunft-Zettel woertlich im block nachvollziehbar", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "block fuehrt keine Zeile, die nicht in herkunft steht", "erwartet": "True", "gemessen": "True", "pass": true}
+      ],
+      "bestanden": true
+    },
+    "4. INTEGRATION": {
+      "checks": [
+        {"name": "bauen-Aufruf laesst Bibliothek byte-identisch", "erwartet": "'17ff16e75455cb2381d0c6019aadc1af688b031938d488e9f8befd01af84821f'", "gemessen": "'17ff16e75455cb2381d0c6019aadc1af688b031938d488e9f8befd01af84821f'", "pass": true},
+        {"name": "kern_3 mit Duplikat -> Bibliothek byte-identisch (kein zweites Delta)", "erwartet": "'17ff16e75455cb2381d0c6019aadc1af688b031938d488e9f8befd01af84821f'", "gemessen": "'17ff16e75455cb2381d0c6019aadc1af688b031938d488e9f8befd01af84821f'", "pass": true},
+        {"name": "aktiver Kontext y taucht nicht als gespeicherte Fakten auf", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "|y| <= K vor und nach kern_3", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "Bibliothek waechst NUR durch kern_1 (genau der eine neue Fakt)", "erwartet": "True", "gemessen": "True", "pass": true}
+      ],
+      "bestanden": true
+    },
+    "5. INTERFERENZ": {
+      "checks": [
+        {"name": "INVALID - leerer Fakt blockiert (ValueError)", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "INVALID - Bibliothek nach blockiertem Aufruf byte-identisch", "erwartet": "'17ff16e75455cb2381d0c6019aadc1af688b031938d488e9f8befd01af84821f'", "gemessen": "'17ff16e75455cb2381d0c6019aadc1af688b031938d488e9f8befd01af84821f'", "pass": true},
+        {"name": "Zustandsbruch - beschaedigte Grundlage erkannt (ValueError)", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "Zustandsbruch - kein APPLY/STORE (Datei byte-identisch)", "erwartet": "'673ff07e45d0231c574811b21097ced0d8d562eb1113d075b71d5d31e25e1e9b'", "gemessen": "'673ff07e45d0231c574811b21097ced0d8d562eb1113d075b71d5d31e25e1e9b'", "pass": true},
+        {"name": "Wiederholung - zweiter Lauf angehaengt=False", "erwartet": "False", "gemessen": "False", "pass": true},
+        {"name": "Wiederholung - block-Hash identisch", "erwartet": "'e659c1e8043d2ae19444bcde7d2e297eaae5047e603f82249e481da0fc6e2308'", "gemessen": "'e659c1e8043d2ae19444bcde7d2e297eaae5047e603f82249e481da0fc6e2308'", "pass": true},
+        {"name": "Wiederholung - Bibliothek-Hash identisch (kein zweites Delta)", "erwartet": "'228f1b6372c4f759646ff9057b7e904a8041b12a2bb18163c36fb5ce03790d7c'", "gemessen": "'228f1b6372c4f759646ff9057b7e904a8041b12a2bb18163c36fb5ce03790d7c'", "pass": true},
+        {"name": "keine vorhandenen Fakten verloren", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "kein Fakt doppelt integriert", "erwartet": "2", "gemessen": "2", "pass": true},
+        {"name": "leerer Kontext -> block='' , herkunft=[]", "erwartet": "('', [])", "gemessen": "('', [])", "pass": true},
+        {"name": "unpassender Bedarf -> leerer Kontext, keine Integration", "erwartet": "('', [])", "gemessen": "('', [])", "pass": true},
+        {"name": "K_MAX_ZETTEL - 500 matchende Fakten -> |herkunft| <= K", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "K_MAX_ZETTEL - block hat <= K Zeilen", "erwartet": "True", "gemessen": "True", "pass": true}
+      ],
+      "bestanden": true
+    },
+    "REGRESSION kern_1 + kern_2 (unveraendert)": {
+      "checks": [
+        {"name": "I - Bibliothek +1", "erwartet": "2", "gemessen": "2", "pass": true},
+        {"name": "III - kern_1 in kern_3 -> True", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "III - hash(datei) == hash('test\\nregr fakt\\n')", "erwartet": "'2aca93f470091c50499a15dc0bf357711c067239f913c8f43af8e53f1132ae3d'", "gemessen": "'2aca93f470091c50499a15dc0bf357711c067239f913c8f43af8e53f1132ae3d'", "pass": true},
+        {"name": "Idempotenz - zweiter kern_3 selber Fakt -> False", "erwartet": "False", "gemessen": "False", "pass": true},
+        {"name": "II - |kontext| <= K in kern_3", "erwartet": "True", "gemessen": "True", "pass": true}
+      ],
+      "bestanden": true
+    }
+  },
+  "ergebnis": "BESTANDEN"
+}

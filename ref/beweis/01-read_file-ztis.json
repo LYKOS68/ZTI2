@@ -1,0 +1,17 @@
+{
+  "beweisstueck": "read_file / lies_text",
+  "ebene": "ZTIS in klein",
+  "invariante": "read_file(p) == read_file(p) bei unveraenderter Datei; kaputte Bytes -> Fehler, nicht falsches I",
+  "geprueft_am": "2026-08-29T06:31:42",
+  "herkunft": "pipeline.py BASELINE-1 (Beweisstueck B1)",
+  "checks": [
+    {"name": "Z - Datei existiert, Bytes>0", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "T - bytes->str dekodiert", "erwartet": "'test'", "gemessen": "'test'", "pass": true},
+    {"name": "I - Inhalt korrekt", "erwartet": "'test'", "gemessen": "'test'", "pass": true},
+    {"name": "S - len(return) == Zeichen der Datei", "erwartet": "4", "gemessen": "4", "pass": true},
+    {"name": "Interferenz - kaputte Bytes -> ValueError", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "INV - lies_text(p) == lies_text(p)", "erwartet": "'test'", "gemessen": "'test'", "pass": true},
+    {"name": "INV - hash(return) == hash(datei)", "erwartet": "'9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'", "gemessen": "'9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'", "pass": true}
+  ],
+  "ergebnis": "BESTANDEN"
+}

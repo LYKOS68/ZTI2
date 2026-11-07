@@ -1,0 +1,21 @@
+{
+  "saeule": "INFORMATION",
+  "invariante": "BravoValidator erzeugt GENAU ein Bit 0/1; 1 nur bei gueltigem Schema (str, nicht-leer, nicht Blockliste, <=MAX_LEN)",
+  "geprueft_am": "2026-08-29T06:15:43",
+  "checks": [
+    {"name": "gueltiger String -> 1", "erwartet": "1", "gemessen": "1", "pass": true},
+    {"name": "'INVALID' -> 0", "erwartet": "0", "gemessen": "0", "pass": true},
+    {"name": "'CORRUPT' -> 0", "erwartet": "0", "gemessen": "0", "pass": true},
+    {"name": "'' -> 0", "erwartet": "0", "gemessen": "0", "pass": true},
+    {"name": "'   ' -> 0", "erwartet": "0", "gemessen": "0", "pass": true},
+    {"name": "dict -> 0 (falscher Typ)", "erwartet": "0", "gemessen": "0", "pass": true},
+    {"name": "list -> 0", "erwartet": "0", "gemessen": "0", "pass": true},
+    {"name": "int -> 0", "erwartet": "0", "gemessen": "0", "pass": true},
+    {"name": "None -> 0", "erwartet": "0", "gemessen": "0", "pass": true},
+    {"name": "uebermassig lang -> 0", "erwartet": "0", "gemessen": "0", "pass": true},
+    {"name": "'BANANA' -> 1 (Schema erlaubt beliebigen Inhalt, nur Form zaehlt)", "erwartet": "1", "gemessen": "1", "pass": true},
+    {"name": "Ausgabe immer exakt 0 oder 1 (int)", "erwartet": "{0, 1}", "gemessen": "{0, 1}", "pass": true},
+    {"name": "deterministisch", "erwartet": "1", "gemessen": "1", "pass": true}
+  ],
+  "ergebnis": "BESTANDEN"
+}

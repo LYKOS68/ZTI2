@@ -1,0 +1,14 @@
+{
+  "saeule": "INTEGRATION",
+  "invariante": "DeltaExecutor schreibt akzeptierten Payload in den Zustand; laeuft NUR bei Bit=1",
+  "geprueft_am": "2026-08-29T06:15:43",
+  "checks": [
+    {"name": "delta setzt data + status UPDATED", "erwartet": "('nutzlast', 'UPDATED')", "gemessen": "('nutzlast', 'UPDATED')", "pass": true},
+    {"name": "Bit=0: data NICHT gesetzt (kein APPLY)", "erwartet": "None", "gemessen": "None", "pass": true},
+    {"name": "Bit=0: status nicht UPDATED", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "Bit=0: Rueckgabe meldet RESET", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "Bit=1: data == payload", "erwartet": "'gueltig'", "gemessen": "'gueltig'", "pass": true},
+    {"name": "Bit=1: status UPDATED", "erwartet": "'UPDATED'", "gemessen": "'UPDATED'", "pass": true}
+  ],
+  "ergebnis": "BESTANDEN"
+}

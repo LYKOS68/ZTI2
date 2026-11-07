@@ -1,0 +1,26 @@
+{
+  "typ": "mathematisches Lemma (Satz, kein getestetes Verhalten)",
+  "nachweis": "deduktiv - der Lauf ist nur Tippfehlerschutz",
+  "objekt": "(x, y) in R^2",
+  "operation": "T_z(x,y) = (x+z, y+z) fuer beliebiges z in R",
+  "invariante": "I(x,y) = x - y",
+  "beweis": "I(T_z(x,y)) = (x+z) - (y+z) = x - y + (z-z) = x - y = I(x,y)  q.e.d.",
+  "vollstaendigkeit": "x-y ist TRENNEND: (x,y) ~ (x',y') <=> x-y = x'-y' ; die Abbildung (x,y) -> (x-y, x) ist eine Bijektion R^2 -> R^2 (Invariante x Bahn-Koordinate). Bahnraum R^2/R ist R.",
+  "lauf": {
+    "start": [2.0, 5.0],
+    "I_start": -3.0,
+    "schritte": [
+      {"z": 10,  "vorher": [2.0, 5.0],   "nachher": [12.0, 15.0],  "I": -3.0},
+      {"z": -4,  "vorher": [12.0, 15.0], "nachher": [8.0, 11.0],   "I": -3.0},
+      {"z": 100, "vorher": [8.0, 11.0],  "nachher": [108.0, 111.0],"I": -3.0}
+    ],
+    "delta_I": 0.0,
+    "verbotene_operation": {"form": "(x+z, y)", "beispiel": "(3,5) +10 -> (13,5)", "I_bruch": "8 != -2", "erkannt": true}
+  },
+  "bezug_zur_engine": {
+    "warnung": "x-y = const ist der FEHLERMODUS - Kontext waechst mit der Bibliothek.",
+    "engine_operation": "(x+z, y) - genau die hier 'verbotene' Operation: Fakt nur in die Bibliothek, Kontext bleibt.",
+    "engine_invariante": "II: y <= K_MAX_ZETTEL ; Folge daraus: x - y -> unendlich (= die Ersparnis)",
+    "praezise_aussage": "y <= K_MAX und x monoton wachsend  ==>  x - y -> unendlich"
+  }
+}

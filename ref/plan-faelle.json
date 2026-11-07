@@ -1,0 +1,103 @@
+{
+ "beschreibung": "plan.py-Referenzlaeufe (Python 3.13.7, pipeline.lies_text als Annahme-Shim); {pfad} ersetzt den Pfad in Zeile 1",
+ "faelle": [
+  {
+   "name": "ok",
+   "csv": "ID,Aufgabe,Abhängigkeit\nP1,Grundlage,Start\nP1.1,Teil A,P1\nP1.2,Teil B,P1.1\n,,\nP2,Zweites,P1\nP3,Drittes,P2/P1.2\nP4,Haengt am Teilbaum,P1\n",
+   "exit": 0,
+   "stdout": "[1/4] Lese {pfad}\n      6 Aufgaben geladen\n[2/4] Pruefe Abhaengigkeits-Graph\n      ok: alle Abhaengigkeiten aufloesbar, keine Zyklen\n      HINWEIS: P2 haengt an 'P1', das Unteraufgaben hat - gemeint ist die Task 'P1', nicht der ganze Teilbaum P1.x\n      HINWEIS: P4 haengt an 'P1', das Unteraufgaben hat - gemeint ist die Task 'P1', nicht der ganze Teilbaum P1.x\n[3/4] Status (fest verdrahtet, alle nicht genannten = OFFEN):\n      P1 = FERTIG\n[4/4] Berechne zulaessige naechste Aufgaben\n\nZULAESSIG (3):\n  P1.1    Teil A\n  P2      Zweites\n  P4      Haengt am Teilbaum\n\nBLOCKIERT (2):\n  P1.2    <- wartet auf P1.1\n  P3      <- wartet auf P2, P1.2\n",
+   "stderr": ""
+  },
+  {
+   "name": "fehlende_abhaengigkeit",
+   "csv": "ID,Aufgabe,Abhängigkeit\nP1,Grundlage,Start\nP2,Zweites,P9\n",
+   "exit": 2,
+   "stdout": "[1/4] Lese {pfad}\n      2 Aufgaben geladen\n[2/4] Pruefe Abhaengigkeits-Graph\n      FEHLER: P2: Abhaengigkeit 'P9' existiert nicht\n      -> Graph kaputt, keine Berechnung.\n",
+   "stderr": ""
+  },
+  {
+   "name": "zyklus",
+   "csv": "ID,Aufgabe,Abhängigkeit\nA,a,B\nB,b,C\nC,c,A\nD,d,Start\n",
+   "exit": 2,
+   "stdout": "[1/4] Lese {pfad}\n      4 Aufgaben geladen\n[2/4] Pruefe Abhaengigkeits-Graph\n      FEHLER: Zyklus: A -> B -> C -> A\n      -> Graph kaputt, keine Berechnung.\n",
+   "stderr": ""
+  },
+  {
+   "name": "kopf_unvollstaendig",
+   "csv": "ID,Aufgabe\nP1,x\n",
+   "exit": 1,
+   "stdout": "[1/4] Lese {pfad}\n      FEHLER: CSV-Kopf unvollstaendig, fehlt: Abhängigkeit. Gefunden: ['ID', 'Aufgabe']\n",
+   "stderr": ""
+  },
+  {
+   "name": "leer",
+   "csv": "",
+   "exit": 1,
+   "stdout": "[1/4] Lese {pfad}\n      FEHLER: CSV-Kopf unvollstaendig, fehlt: Abhängigkeit, Aufgabe, ID. Gefunden: None\n",
+   "stderr": ""
+  },
+  {
+   "name": "nur_kopf",
+   "csv": "ID,Aufgabe,Abhängigkeit\n",
+   "exit": 1,
+   "stdout": "[1/4] Lese {pfad}\n      FEHLER: keine Aufgaben gelesen - CSV leer oder Format falsch\n",
+   "stderr": ""
+  },
+  {
+   "name": "bom",
+   "csv": "﻿ID,Aufgabe,Abhängigkeit\nP1,x,Start\n",
+   "exit": 1,
+   "stdout": "[1/4] Lese {pfad}\n      FEHLER: CSV-Kopf unvollstaendig, fehlt: ID. Gefunden: ['\\ufeffID', 'Aufgabe', 'Abhängigkeit']\n",
+   "stderr": ""
+  },
+  {
+   "name": "quotes_umlaut",
+   "csv": "ID,Aufgabe,Abhängigkeit\nP1,Basis,Start\nP5,\"Mixing, Mastering ä\",P1\nP6,\"Zitat \"\"x\"\"\",P5\n",
+   "exit": 0,
+   "stdout": "[1/4] Lese {pfad}\n      3 Aufgaben geladen\n[2/4] Pruefe Abhaengigkeits-Graph\n      ok: alle Abhaengigkeiten aufloesbar, keine Zyklen\n[3/4] Status (fest verdrahtet, alle nicht genannten = OFFEN):\n      P1 = FERTIG\n[4/4] Berechne zulaessige naechste Aufgaben\n\nZULAESSIG (1):\n  P5      Mixing, Mastering ä\n\nBLOCKIERT (1):\n  P6      <- wartet auf P5\n",
+   "stderr": ""
+  },
+  {
+   "name": "lange_id",
+   "csv": "ID,Aufgabe,Abhängigkeit\nP1,Basis,Start\nLANGEID1,lang,P1\nX,kurz,LANGEID1\n",
+   "exit": 0,
+   "stdout": "[1/4] Lese {pfad}\n      3 Aufgaben geladen\n[2/4] Pruefe Abhaengigkeits-Graph\n      ok: alle Abhaengigkeiten aufloesbar, keine Zyklen\n[3/4] Status (fest verdrahtet, alle nicht genannten = OFFEN):\n      P1 = FERTIG\n[4/4] Berechne zulaessige naechste Aufgaben\n\nZULAESSIG (1):\n  LANGEID1  lang\n\nBLOCKIERT (1):\n  X       <- wartet auf LANGEID1\n",
+   "stderr": ""
+  },
+  {
+   "name": "doppelte_id",
+   "csv": "ID,Aufgabe,Abhängigkeit\nP1,Basis,Start\nP2,erst,P1\nP2,dann,P3\nP3,drei,Start\n",
+   "exit": 0,
+   "stdout": "[1/4] Lese {pfad}\n      4 Aufgaben geladen\n[2/4] Pruefe Abhaengigkeits-Graph\n      ok: alle Abhaengigkeiten aufloesbar, keine Zyklen\n[3/4] Status (fest verdrahtet, alle nicht genannten = OFFEN):\n      P1 = FERTIG\n[4/4] Berechne zulaessige naechste Aufgaben\n\nZULAESSIG (2):\n  P2      erst\n  P3      drei\n\nBLOCKIERT (1):\n  P2      <- wartet auf P3\n",
+   "stderr": ""
+  },
+  {
+   "name": "leerzeichen_deps",
+   "csv": "ID,Aufgabe,Abhängigkeit\nP1,Basis,Start\nP2,zwei, P1 / Start \nP3,drei,P1//P2/\n",
+   "exit": 0,
+   "stdout": "[1/4] Lese {pfad}\n      3 Aufgaben geladen\n[2/4] Pruefe Abhaengigkeits-Graph\n      ok: alle Abhaengigkeiten aufloesbar, keine Zyklen\n[3/4] Status (fest verdrahtet, alle nicht genannten = OFFEN):\n      P1 = FERTIG\n[4/4] Berechne zulaessige naechste Aufgaben\n\nZULAESSIG (1):\n  P2      zwei\n\nBLOCKIERT (1):\n  P3      <- wartet auf P2\n",
+   "stderr": ""
+  },
+  {
+   "name": "crlf_und_kurze_zeile",
+   "csv": "ID,Aufgabe,Abhängigkeit\r\nP1,Basis,Start\r\nP2,ohne dep\r\nP3,mit,P2\r\n",
+   "exit": 0,
+   "stdout": "[1/4] Lese {pfad}\n      3 Aufgaben geladen\n[2/4] Pruefe Abhaengigkeits-Graph\n      ok: alle Abhaengigkeiten aufloesbar, keine Zyklen\n[3/4] Status (fest verdrahtet, alle nicht genannten = OFFEN):\n      P1 = FERTIG\n[4/4] Berechne zulaessige naechste Aufgaben\n\nZULAESSIG (1):\n  P2      ohne dep\n\nBLOCKIERT (1):\n  P3      <- wartet auf P2\n",
+   "stderr": ""
+  },
+  {
+   "name": "alles_fertig_bis_auf_p1",
+   "csv": "ID,Aufgabe,Abhängigkeit\nP1,Basis,Start\n",
+   "exit": 0,
+   "stdout": "[1/4] Lese {pfad}\n      1 Aufgaben geladen\n[2/4] Pruefe Abhaengigkeits-Graph\n      ok: alle Abhaengigkeiten aufloesbar, keine Zyklen\n[3/4] Status (fest verdrahtet, alle nicht genannten = OFFEN):\n      P1 = FERTIG\n[4/4] Berechne zulaessige naechste Aufgaben\n\nZULAESSIG (0):\n\nBLOCKIERT (0):\n",
+   "stderr": ""
+  },
+  {
+   "name": "datei_fehlt",
+   "csv": null,
+   "exit": 1,
+   "stdout": "[1/4] Lese {pfad}\n      FEHLER: lies_text: [Errno 2] No such file or directory: 'fehlt.csv'\n",
+   "stderr": ""
+  }
+ ]
+}

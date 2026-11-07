@@ -1,0 +1,22 @@
+{
+  "saeule": "INTERFERENZ",
+  "invariante": "Chrono-Trigger SLEEP/WAKE; Bit=0 -> validierter RESET; Pre-Wake-Check; INVALID/Zustandsbruch/Wiederholung",
+  "geprueft_am": "2026-08-29T06:15:43",
+  "checks": [
+    {"name": "kein Input + Zeit nicht abgelaufen -> SLEEP", "erwartet": "'SLEEP'", "gemessen": "'SLEEP'", "pass": true},
+    {"name": "Zeit abgelaufen -> WAKE (kein SLEEP)", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "Input vorhanden vor Intervall -> WAKE", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "INVALID -> RESET (BIT=0)", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "INVALID -> data auf None (Charlie-RESET)", "erwartet": "None", "gemessen": "None", "pass": true},
+    {"name": "INVALID -> status CLEAN", "erwartet": "'CLEAN'", "gemessen": "'CLEAN'", "pass": true},
+    {"name": "Charlie protokolliert Alt-Wert", "erwartet": "'muell'", "gemessen": "'muell'", "pass": true},
+    {"name": "Charlie: data None, status CLEAN, tick erhalten (war gueltig)", "erwartet": "(None, 'CLEAN', 7)", "gemessen": "(None, 'CLEAN', 7)", "pass": true},
+    {"name": "Zustandsbruch -> PRE-WAKE RESET", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "Zustandsbruch -> kein EXECUTE (data nicht 'neue daten')", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "Zustandsbruch -> Zustand nach RESET wieder konsistent", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "Wiederholung: identisches Ergebnis bei identischem Start", "erwartet": "\"TICK 1: EXECUTE (BIT=1) -> State: 'wiederhol'\"", "gemessen": "\"TICK 1: EXECUTE (BIT=1) -> State: 'wiederhol'\"", "pass": true},
+    {"name": "Wiederholung: gleicher Zustand", "erwartet": "('wiederhol', 'UPDATED')", "gemessen": "('wiederhol', 'UPDATED')", "pass": true},
+    {"name": "zweiter EXECUTE mit selbem Payload: data unveraendert (idempotent auf data)", "erwartet": "'wiederhol'", "gemessen": "'wiederhol'", "pass": true}
+  ],
+  "ergebnis": "BESTANDEN"
+}

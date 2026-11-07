@@ -1,0 +1,284 @@
+{
+  "titel": "ZTIS-Kanon: Positionsmodell und Synthese",
+  "stand": "2026-10-26",
+  "quelle": "festgelegt von Roman; Main.go richtet sich danach und prueft sich in der Saeule KANON gegen diese Datei",
+  "grundsatz": [
+    "ZTIS (Objekt), ABCD (Operator), Zoom (Router) und Bit 0/1 (Syncpunkt) sind dieselbe Einheit aus verschiedenen Sichten. Es gibt keine Hierarchie und kein 'unten'.",
+    "Z, T, I und S sind untrennbar: 'Wasser stroemt', nicht Z=Wasser und T=Stroemung. Nimmt man eins weg, geht keins. Jedes T, jedes I und jedes S ist selbst ein volles ZTIS.",
+    "Bit 0/1 ist exakt der Syncpunkt: beide bestehen selbst aus einem vollen ZTIS-Zyklus und sind sein Abschluss.",
+    "Die Position ist fest, die Woerter sind Beschriftungen je Layer."
+  ],
+  "synthese": "Jeder Wortsatz markiert seinen Layer: ZTIS-Woerter sind immer Objekt, ABCD immer Operator, Zoom-Woerter immer Router. Darum kann man GLEICHZEITIG ueber 3 Layer adressieren, z.B. 'auf Zustand, mit Bravo, auf Ebene X', ohne Transformation und Zoom zu vermischen. Die drei Woerter zusammen sind eine eindeutige Adresse.",
+  "positionen": [
+    "Element 1",
+    "Element 2",
+    "Element 3",
+    "Motor: bindet die 3 Elemente und schliesst mit Bit 0/1 (Syncpunkt)"
+  ],
+  "layer": {
+    "objekt": {
+      "sicht": "ZTIS",
+      "frage": "was ist da",
+      "woerter": [
+        "Zustand",
+        "Transformation",
+        "Information",
+        "Syncpunkt"
+      ]
+    },
+    "operator": {
+      "sicht": "ABCD",
+      "frage": "womit wird operiert",
+      "woerter": [
+        "Alpha",
+        "Bravo",
+        "Charlie",
+        "Delta"
+      ],
+      "taetigkeiten": [
+        "identifizieren",
+        "generieren",
+        "validieren",
+        "integrieren"
+      ],
+      "opcode": "Ein Opcode ist Taetigkeit (Operator) auf Objekt, z.B. 'Zustand identifizieren' = Alpha auf Zustand."
+    },
+    "router": {
+      "sicht": "Zoom",
+      "frage": "auf welcher Ebene",
+      "woerter": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "offen": "Beschriftung und Reihenfolge (Meso, Makro, Mikro, ...) legt Roman fest"
+    }
+  },
+  "normalform": {
+    "regel": "Jede Begriffsreihe ist 3+1: immer 3 Elemente, gebunden von 1 Motor (Position 4, Syncpunkt/Bit). Damit hat jede Ebene genau 4 Positionen = 2 Bit.",
+    "motor_ist_zyklus": "Der Motor selbst, also das Schliessen und Gate-Setzen, ist wieder ein kompletter 3+1-Zyklus.",
+    "mehr_als_3": "mehr als 3 Elemente heisst 2 Motoren: wird in 2x (3+1) geteilt, bis jede Gruppe 3+1 ist",
+    "weniger_als_3": "weniger als 3 Elemente heisst, der Motor wurde vergessen: man sucht den fehlenden Motor, statt beliebig aufzufuellen",
+    "beispiele": [
+      "kurz, mittel, lang (+1)",
+      "weich, normal, hart (+1)",
+      "nah, entfernt, weit (+1)",
+      "oben, mitte, unten (+1)",
+      "rechts, mitte, links (+1)",
+      "oben, links, mitte, unten, rechts -> 2x (3+1): oben/mitte/unten und links/mitte/rechts"
+    ],
+    "offen": "Wie im Einzelfall geteilt oder aufgefuellt wird (welches Glied geteilt, womit aufgefuellt) legt Roman fest"
+  },
+  "adresse": {
+    "nie_vollstaendig": "Die Adresse ist offen: Begriffe lassen sich jederzeit ersetzen, neue Reihen kommen als weitere Sichten dazu.",
+    "format": "je Ebene 2 Bit (Position 1..4 -> 0..3); die drei Kern-Layer zusammen 1 Byte: Objekt<<4 | Operator<<2 | Zoom. Tiefere Reihen haengen weitere 2-Bit-Ebenen an.",
+    "beispiel": "auf Zustand, mit Bravo, Zoom-Position 1 -> 0b00_01_00 = 0x04"
+  },
+  "gate": {
+    "0": "Delta-Reset -> CLEAN",
+    "1": "Delta-Bindung -> UPDATED"
+  },
+  "regeln": [
+    "Woerter verschiedener Layer nie gleichsetzen: 'Bravo' ist nie 'Transformation', beide stehen nur an derselben Position.",
+    "Im Code eigener Typ je Layer (Objekt, Operator, Zoom): Vermischen ist ein Compile-Fehler, kein Laufzeitfehler.",
+    "Keine Zuordnung erfinden, die nicht in dieser Datei steht."
+  ],
+  "befund": {
+    "loop.py": "Namen um eine Position verschoben (AlphaGenerator an Position 2, BravoValidator an 3, CharlieGuard und DeltaExecutor an 4). Das ist ein Positionsfehler, keine reine Namensfrage. Main.go ist nach Position ausgerichtet; Check-Namen aus ref/ behalten die Python-Namen, weil sie byte-genau verglichen werden."
+  },
+  "ids": {
+    "regel": "Feste Zahl je Begriff: ID = Layer<<2 | (Position-1), Layer objekt=0, operator=1, router=2. Synonyme an derselben Stelle (Bravo, generieren) teilen die ID. IDs werden nie geaendert und nie neu vergeben.",
+    "begriffe": [
+      {
+        "id": 0,
+        "layer": "objekt",
+        "position": 1,
+        "begriff": "Zustand"
+      },
+      {
+        "id": 1,
+        "layer": "objekt",
+        "position": 2,
+        "begriff": "Transformation"
+      },
+      {
+        "id": 2,
+        "layer": "objekt",
+        "position": 3,
+        "begriff": "Information"
+      },
+      {
+        "id": 3,
+        "layer": "objekt",
+        "position": 4,
+        "begriff": "Syncpunkt"
+      },
+      {
+        "id": 4,
+        "layer": "operator",
+        "position": 1,
+        "begriff": "Alpha"
+      },
+      {
+        "id": 5,
+        "layer": "operator",
+        "position": 2,
+        "begriff": "Bravo"
+      },
+      {
+        "id": 6,
+        "layer": "operator",
+        "position": 3,
+        "begriff": "Charlie"
+      },
+      {
+        "id": 7,
+        "layer": "operator",
+        "position": 4,
+        "begriff": "Delta"
+      },
+      {
+        "id": 4,
+        "layer": "operator",
+        "position": 1,
+        "begriff": "identifizieren"
+      },
+      {
+        "id": 5,
+        "layer": "operator",
+        "position": 2,
+        "begriff": "generieren"
+      },
+      {
+        "id": 6,
+        "layer": "operator",
+        "position": 3,
+        "begriff": "validieren"
+      },
+      {
+        "id": 7,
+        "layer": "operator",
+        "position": 4,
+        "begriff": "integrieren"
+      }
+    ]
+  },
+  "opcodes": {
+    "regel": "Feste Zahl je Begriffspaar: Opcode = Objekt<<2 | Operator (0..15), Lesart = Objekt + Taetigkeit. Mit Zoom spaeter Opcode<<2 | Zoom. handler null = nicht belegt.",
+    "tabelle": [
+      {
+        "op": 0,
+        "objekt": "Zustand",
+        "operator": "Alpha",
+        "lesart": "Zustand identifizieren",
+        "handler": "konsistent"
+      },
+      {
+        "op": 1,
+        "objekt": "Zustand",
+        "operator": "Bravo",
+        "lesart": "Zustand generieren",
+        "handler": null
+      },
+      {
+        "op": 2,
+        "objekt": "Zustand",
+        "operator": "Charlie",
+        "lesart": "Zustand validieren",
+        "handler": null
+      },
+      {
+        "op": 3,
+        "objekt": "Zustand",
+        "operator": "Delta",
+        "lesart": "Zustand integrieren",
+        "handler": null
+      },
+      {
+        "op": 4,
+        "objekt": "Transformation",
+        "operator": "Alpha",
+        "lesart": "Transformation identifizieren",
+        "handler": null
+      },
+      {
+        "op": 5,
+        "objekt": "Transformation",
+        "operator": "Bravo",
+        "lesart": "Transformation generieren",
+        "handler": "transform"
+      },
+      {
+        "op": 6,
+        "objekt": "Transformation",
+        "operator": "Charlie",
+        "lesart": "Transformation validieren",
+        "handler": null
+      },
+      {
+        "op": 7,
+        "objekt": "Transformation",
+        "operator": "Delta",
+        "lesart": "Transformation integrieren",
+        "handler": null
+      },
+      {
+        "op": 8,
+        "objekt": "Information",
+        "operator": "Alpha",
+        "lesart": "Information identifizieren",
+        "handler": null
+      },
+      {
+        "op": 9,
+        "objekt": "Information",
+        "operator": "Bravo",
+        "lesart": "Information generieren",
+        "handler": null
+      },
+      {
+        "op": 10,
+        "objekt": "Information",
+        "operator": "Charlie",
+        "lesart": "Information validieren",
+        "handler": "inform"
+      },
+      {
+        "op": 11,
+        "objekt": "Information",
+        "operator": "Delta",
+        "lesart": "Information integrieren",
+        "handler": null
+      },
+      {
+        "op": 12,
+        "objekt": "Syncpunkt",
+        "operator": "Alpha",
+        "lesart": "Syncpunkt identifizieren",
+        "handler": null
+      },
+      {
+        "op": 13,
+        "objekt": "Syncpunkt",
+        "operator": "Bravo",
+        "lesart": "Syncpunkt generieren",
+        "handler": null
+      },
+      {
+        "op": 14,
+        "objekt": "Syncpunkt",
+        "operator": "Charlie",
+        "lesart": "Syncpunkt validieren",
+        "handler": null
+      },
+      {
+        "op": 15,
+        "objekt": "Syncpunkt",
+        "operator": "Delta",
+        "lesart": "Syncpunkt integrieren",
+        "handler": "gate (deltaReset | deltaBinden)"
+      }
+    ]
+  }
+}

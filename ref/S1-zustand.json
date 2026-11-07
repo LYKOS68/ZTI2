@@ -1,0 +1,15 @@
+{
+  "saeule": "ZUSTAND",
+  "invariante": "SharedState-Felder haben immer die erwarteten Typen/Werte; last_pulse waechst nur bei WAKE",
+  "geprueft_am": "2026-08-29T06:15:43",
+  "checks": [
+    {"name": "Start: status SLEEP, tick 0, data None", "erwartet": "('SLEEP', 0, None)", "gemessen": "('SLEEP', 0, None)", "pass": true},
+    {"name": "frischer Zustand ist konsistent", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "nach EXECUTE: tick 1, status UPDATED, data gesetzt", "erwartet": "(1, 'UPDATED', 'VALID')", "gemessen": "(1, 'UPDATED', 'VALID')", "pass": true},
+    {"name": "SLEEP aendert last_pulse nicht", "erwartet": "0.0", "gemessen": "0.0", "pass": true},
+    {"name": "SLEEP erhoeht tick nicht", "erwartet": "1", "gemessen": "1", "pass": true},
+    {"name": "WAKE nach Zeitablauf setzt last_pulse neu", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "inkonsistenter tick -> konsistent() False", "erwartet": "False", "gemessen": "False", "pass": true}
+  ],
+  "ergebnis": "BESTANDEN"
+}

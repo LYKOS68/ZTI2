@@ -1,0 +1,12 @@
+{
+  "beschreibung": "deterministischer Lauf mit kontrollierter Uhr (interval=0.5, dt=0.3)",
+  "geprueft_am": "2026-08-29T06:15:43",
+  "schritte": [
+    {"t": 0.0, "input": null, "status": "SLEEP", "ergebnis": "SLEEP"},
+    {"t": 0.3, "input": null, "status": "SLEEP", "ergebnis": "SLEEP"},
+    {"t": 0.6, "input": "VALID_DATA", "status": "UPDATED", "ergebnis": "TICK 1: EXECUTE (BIT=1) -> State: 'VALID_DATA'"},
+    {"t": 0.9, "input": null, "status": "SLEEP", "ergebnis": "SLEEP"},
+    {"t": 1.2, "input": "INVALID", "status": "CLEAN", "ergebnis": "TICK 2: RESET (BIT=0)"},
+    {"t": 1.5, "input": null, "status": "SLEEP", "ergebnis": "SLEEP"}
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "beweisstueck": "kern_4 = kern_3 + modellaufruf",
+  "einzige_neue_mechanik": "modellaufruf(block, herkunft, modell_fn, cache) - Modell erhaelt NUR den block",
+  "design": "modell_fn injizierbar, Default = deterministischer Offline-Stub; echtes Ollama-Backend austauschbar, nicht im Beweispfad",
+  "keine_rueckschreibung": "Modellantwort bleibt im Rueckgabe-dict, wird NIE in die Bibliothek geschrieben (das ist kern_5)",
+  "erhalten_unveraendert": ["kern_1 (I,III,Idemp)", "kern_2/holen (II)", "kern_3/bauen (ZTI-5)", "Engine-Op (x+z,y)"],
+  "geprueft_am": "2026-08-29T06:31:44",
+  "saeulen": {
+    "1. ZUSTAND": {
+      "checks": [
+        {"name": "Bibliothek waechst genau +1 (kern_1)", "erwartet": "6", "gemessen": "6", "pass": true},
+        {"name": "Grund-Fakten unveraendert erhalten", "erwartet": "['apfel ist rot', 'birne ist gruen', 'apfel im korb', 'auto faehrt schnell', 'kirsche ist klein']", "gemessen": "['apfel ist rot', 'birne ist gruen', 'apfel im korb', 'auto faehrt schnell', 'kirsche ist klein']", "pass": true},
+        {"name": "|y| <= K", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "Modellantwort NICHT in der Bibliothek gespeichert (keine Rueckschreibung)", "erwartet": "False", "gemessen": "False", "pass": true}
+      ],
+      "bestanden": true
+    },
+    "2. TRANSFORMATION": {
+      "checks": [
+        {"name": "modellaufruf-Signatur enthaelt keinen Datei-/Bibliothekspfad", "erwartet": "['block', 'herkunft', 'modell_fn', 'cache']", "gemessen": "['block', 'herkunft', 'modell_fn', 'cache']", "pass": true},
+        {"name": "prompt == block (nichts aus der Bibliothek ergaenzt)", "erwartet": "'apfel ist rot\\napfel im korb'", "gemessen": "'apfel ist rot\\napfel im korb'", "pass": true},
+        {"name": "prompt enthaelt nur herkunft-Zeilen", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "'auto faehrt schnell' (Bibliothek, nicht im Kontext) nicht im prompt", "erwartet": "False", "gemessen": "False", "pass": true},
+        {"name": "deterministisch (Stub): identisches Ergebnis", "erwartet": "{'prompt': 'apfel ist rot\\napfel im korb', 'herkunft': ['apfel ist rot', 'apfel im korb'], 'antwort': 'ANTWORT[2 Zettel]: apfel ist rot | apfel im korb', 'prompt_hash': '0f6e28817a425cb0c0e810051e9b750726c7a2e37e7c55f34876ed044b0492ad', 'leer': False, 'wiederholt': False}", "gemessen": "{'prompt': 'apfel ist rot\\napfel im korb', 'herkunft': ['apfel ist rot', 'apfel im korb'], 'antwort': 'ANTWORT[2 Zettel]: apfel ist rot | apfel im korb', 'prompt_hash': '0f6e28817a425cb0c0e810051e9b750726c7a2e37e7c55f34876ed044b0492ad', 'leer': False, 'wiederholt': False}", "pass": true}
+      ],
+      "bestanden": true
+    },
+    "3. INFORMATION": {
+      "checks": [
+        {"name": "Ergebnis fuehrt: prompt, herkunft, antwort, prompt_hash", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "prompt_hash == sha256(prompt)", "erwartet": "'d1ffe34c649c7b01d06c810519e3cdaf8195df41ab5ab883500f657888ff39dc'", "gemessen": "'d1ffe34c649c7b01d06c810519e3cdaf8195df41ab5ab883500f657888ff39dc'", "pass": true},
+        {"name": "herkunft == welche Zettel den prompt speisten", "erwartet": "['apfel im korb', 'apfel ist rot']", "gemessen": "['apfel im korb', 'apfel ist rot']", "pass": true},
+        {"name": "jede prompt-Zeile in herkunft nachvollziehbar", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "herkunft ⊆ echte Bibliotheksfakten (nichts erfunden)", "erwartet": "True", "gemessen": "True", "pass": true}
+      ],
+      "bestanden": true
+    },
+    "4. INTEGRATION": {
+      "checks": [
+        {"name": "kern_1/kern_2/kern_3/holen/bauen Quelltext unveraendert (Regression separat) - Signaturen stabil", "erwartet": "[['datei_pfad', 'neuer_fakt'], ['datei_pfad', 'neuer_fakt', 'bedarf'], ['kontext', 'relevanz']]", "gemessen": "[['datei_pfad', 'neuer_fakt'], ['datei_pfad', 'neuer_fakt', 'bedarf'], ['kontext', 'relevanz']]", "pass": true},
+        {"name": "modellaufruf aendert die Bibliothek NICHT (Hash nach kern_3 == nach Modell)", "erwartet": "'5886f3456caae5f6a14873773b0d2bc8d6d88028f83afe2fc27dc42553121edb'", "gemessen": "'5886f3456caae5f6a14873773b0d2bc8d6d88028f83afe2fc27dc42553121edb'", "pass": true},
+        {"name": "|y| <= K vor und nach dem Modellschritt", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "Modellantwort bleibt im Speicher (Rueckgabe-dict), nie in der Datei", "erwartet": "True", "gemessen": "True", "pass": true}
+      ],
+      "bestanden": true
+    },
+    "5. INTERFERENZ": {
+      "checks": [
+        {"name": "INVALID (leerer Fakt) -> ValueError", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "INVALID -> Bibliothek byte-identisch", "erwartet": "'c1f3518eee7151107e073a751eafe33480bf9bc0073d523c1bb725136b66acf0'", "gemessen": "'c1f3518eee7151107e073a751eafe33480bf9bc0073d523c1bb725136b66acf0'", "pass": true},
+        {"name": "INVALID -> Modell NICHT aufgerufen", "erwartet": "0", "gemessen": "0", "pass": true},
+        {"name": "leerer Kontext -> ergebnis['leer'] True, antwort None", "erwartet": "(True, None)", "gemessen": "(True, None)", "pass": true},
+        {"name": "leerer Kontext -> Modell NICHT aufgerufen", "erwartet": "0", "gemessen": "0", "pass": true},
+        {"name": "kaputt -> ValueError (B1 propagiert)", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "kaputt -> kein APPLY/STORE (Datei byte-identisch)", "erwartet": "'66c98d9d233816e77a490bd2127c12a900e0f1b1138b82bef55f6017571c0042'", "gemessen": "'66c98d9d233816e77a490bd2127c12a900e0f1b1138b82bef55f6017571c0042'", "pass": true},
+        {"name": "kaputt -> Modell NICHT aufgerufen", "erwartet": "0", "gemessen": "0", "pass": true},
+        {"name": "wiederholt -> zweiter Lauf ergebnis['wiederholt'] True", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "wiederholt -> Modell nur EINMAL aufgerufen", "erwartet": "1", "gemessen": "1", "pass": true},
+        {"name": "wiederholt -> identische antwort", "erwartet": "'det-antwort(27 zeichen)'", "gemessen": "'det-antwort(27 zeichen)'", "pass": true},
+        {"name": "wiederholt -> Bibliothek waechst nicht (Fakt schon da)", "erwartet": "True", "gemessen": "True", "pass": true},
+        {"name": "Determinismus - gleicher prompt_hash bei gleichem Start", "erwartet": "'0f6e28817a425cb0c0e810051e9b750726c7a2e37e7c55f34876ed044b0492ad'", "gemessen": "'0f6e28817a425cb0c0e810051e9b750726c7a2e37e7c55f34876ed044b0492ad'", "pass": true},
+        {"name": "K_MAX - 400 Treffer -> prompt hat <= K Zeilen", "erwartet": "True", "gemessen": "True", "pass": true}
+      ],
+      "bestanden": true
+    },
+    "REGRESSION 01/02/04/05 laufen separat - hier kern_1..3 durch kern_4": {
+      "checks": [
+        {"name": "I - Bibliothek +1", "erwartet": "2", "gemessen": "2", "pass": true},
+        {"name": "III - hash(datei) == hash('test\\nregr\\n')", "erwartet": "'75403dc5c1aa9fb4824adbfb9fb7251eaa63dcea6c15b89dc68bd114ba2c144f'", "gemessen": "'75403dc5c1aa9fb4824adbfb9fb7251eaa63dcea6c15b89dc68bd114ba2c144f'", "pass": true},
+        {"name": "Idempotenz - zweiter kern_4 selber Fakt -> angehaengt False", "erwartet": "False", "gemessen": "False", "pass": true},
+        {"name": "II - |kontext| <= K", "erwartet": "True", "gemessen": "True", "pass": true}
+      ],
+      "bestanden": true
+    }
+  },
+  "ergebnis": "BESTANDEN"
+}

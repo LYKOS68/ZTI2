@@ -1,0 +1,24 @@
+{
+  "beweisstueck": "kern_1",
+  "invariante": {
+    "I": "Zeilen_nachher >= Zeilen_vorher (monoton, kein Fakt verloren)",
+    "II": "|aktiver Kontext| <= K_MAX_ZETTEL=3  (NICHT ausgeuebt - kern_1 traegt keinen Kontext)",
+    "III": "hash(read_file(pfad)) == hash(beabsichtigter Inhalt)",
+    "ZUSATZ": "jeder Fakt hoechstens 1x -> kern_1 idempotent"
+  },
+  "geprueft_am": "2026-08-29T06:31:42",
+  "messung": {"laufzeit_ms": 43.876, "bibliothek_fakten_vorher": 1, "bibliothek_fakten_nachher": 2},
+  "herkunft_reuse": "lies_text + schreibe_atomar aus pipeline.py BASELINE-1",
+  "checks": [
+    {"name": "I - Zeilen nachher == vorher + 1", "erwartet": "2", "gemessen": "2", "pass": true},
+    {"name": "I - kein Fakt verloren ('test' noch da)", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "III - kern_1 -> True (Platte == Absicht)", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "III - hash(datei) == hash(erwarteter Inhalt)", "erwartet": "'75051858f5cf24b800aae461126b9e4d2f10418f7bbf2078066c7d24d2d00fa9'", "gemessen": "'75051858f5cf24b800aae461126b9e4d2f10418f7bbf2078066c7d24d2d00fa9'", "pass": true},
+    {"name": "ZUSATZ - zweiter Aufruf -> False (kein doppeltes Tragen)", "erwartet": "False", "gemessen": "False", "pass": true},
+    {"name": "ZUSATZ - Bibliothek unveraendert nach dup-Versuch", "erwartet": "'75051858f5cf24b800aae461126b9e4d2f10418f7bbf2078066c7d24d2d00fa9'", "gemessen": "'75051858f5cf24b800aae461126b9e4d2f10418f7bbf2078066c7d24d2d00fa9'", "pass": true},
+    {"name": "ZUSATZ - Fakt steht genau 1x", "erwartet": "1", "gemessen": "1", "pass": true},
+    {"name": "B1 - fehlende Datei -> ValueError", "erwartet": "True", "gemessen": "True", "pass": true},
+    {"name": "leerer Fakt -> ValueError", "erwartet": "True", "gemessen": "True", "pass": true}
+  ],
+  "ergebnis": "BESTANDEN"
+}
